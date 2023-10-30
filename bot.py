@@ -82,6 +82,7 @@ def launch_browser():
 
 def open_questions(browser, self_check_user=None):
     timeout = 5
+    WHITELIST = os.environ.get('WHITELIST', '').split(',')
 
     def send_message(text):
         for _ in range(20):
@@ -125,6 +126,8 @@ def open_questions(browser, self_check_user=None):
                         )
                         yield ("", send_message)
                         browser.switch_to.parent_frame()
+                    continue
+                if WHITELIST and email not in WHITELIST:
                     continue
                 contact.click()
                 WebDriverWait(browser, timeout).until(
