@@ -145,6 +145,14 @@ def open_questions(browser, self_check_user=None):
 if __name__ == "__main__":
     assert len(sys.argv) in (1, 2)
 
+    if sys.argv[-1] == "self-check":
+        for _, answer_function in open_questions(launch_browser(), self_check_user=os.environ["SELF_CHECK_USER"]):
+            answer_function(
+                "self check message <3",
+            )
+            sys.exit(0)
+        assert False, "cannot send test message"
+
     for question, answer_function in open_questions(launch_browser()):
         print(f"User asked: {question}")
         answer = f'dummy answer to {question}. Here should sit your answering logic'
